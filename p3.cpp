@@ -68,8 +68,6 @@ int main (){
                                    {3,4,5,4,3},
                                    {3,3,3,3,3}};
 
-    int (*ptr)[MAX_COLS] = M;
-
     cout << "Matriz: " << endl;
     imprimirMatriz (M);
 
