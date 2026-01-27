@@ -29,7 +29,7 @@ int main (){
 
     int n = 5; // numero de nombres
 
-    for (int i = 0; i < n-1; i++) {
+    for (int i = 0; i<n-1; i++) {
         for (int j = 0; j<n-i-1; j++) {
             if (strcmp(*(nombres+j), *(nombres+j+1)) > 0) {
                 // Intercambiar nombres
