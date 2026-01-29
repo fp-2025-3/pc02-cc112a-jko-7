@@ -1,0 +1,7 @@
+int *f(int,int);    //  f es una función que recibe (int, int) y retorna int*
+int (*f)(int,int);  //  puntero a función que recibe (int, int) y retorna int
+
+
+int (*f[5])(int);       // f es un arreglo de 5 punteros
+int (*(*pf)[3])(double);   // pf es un puntero a un arreglo de 3 de punteros a funciones
+                          // que reciben double y retornan int
