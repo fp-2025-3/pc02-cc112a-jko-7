@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstring>
+#include <cctype>
 using namespace std;
 
 int separar_palabras(char* frase, char* palabras[]){
@@ -9,12 +10,9 @@ int separar_palabras(char* frase, char* palabras[]){
 
     while (*p!='\0'){
 
-        if ((p==frase && *p!=' ') ||(p>frase && *(p-1)=='\0' && *p!=' ')){
+        if ((p==frase && *p!=' ') ||(*(p-1)==' ' && *p!=' ')){
             palabras[i]=p;
             i++;
-        }
-        if (*p==' '){
-            *p='\0';
         }
         p++;
     }
@@ -24,7 +22,7 @@ int separar_palabras(char* frase, char* palabras[]){
 int comparar(const char* a, const char* b){
 
     int i=0;
-    while (a[i]!='\0' && b[i]!='\0'){
+    while (a[i]!=' ' && a[i]!='\0' && b[i]!=' ' && b[i]!='\0'){
         if (a[i]!=b[i]){
             return a[i]-b[i];
         }
@@ -48,12 +46,16 @@ void ordenar(char* palabras[], int n){
 void imprimir(char* palabras[], int n){
 
     for (int i=0; i<n; i++){
-        cout<<palabras[i]<<endl;
+
+        char* p=palabras[i];
+
+        while (*p!='\0' && *p!=' '){
+            cout<<*p;
+            p++;
+        }
+        cout<<endl;
     }
-    cout<<endl;
-
 }
-
 
 int main (){
 
