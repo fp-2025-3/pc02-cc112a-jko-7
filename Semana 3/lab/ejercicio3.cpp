@@ -60,7 +60,7 @@ void imprimir_indice(char* texto, char* indice[], int n){
 
 int main (){
 
-    char texto[300] = "los punteros no se copian se referencian y se ordenan";   // arreglo base
+    char texto[] = "los punteros no se copian se referencian y se ordenan";   // arreglo base
     char* indice[60];    // arreglo de punteros a palabras
 
     int n = construir_indice (texto, indice);
