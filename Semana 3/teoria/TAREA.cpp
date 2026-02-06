@@ -14,9 +14,6 @@ del arreglo
 using namespace std;
 
 
-
-
-
 int main (){
 
     const char* cad[] = {

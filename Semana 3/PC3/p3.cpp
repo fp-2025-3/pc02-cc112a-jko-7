@@ -38,7 +38,7 @@ void cambiarPos(int **A, int col, int valor) {
         int posActual=0;
 
         for(int j=0; j<9; j++) {
-            if(*(*A+i*COLS+j)==valor) {
+            if(*(*A+i*COLS+j)==valor) {  // COLS=9
                 posActual=j;
             }
         }
@@ -89,4 +89,3 @@ int main (){
 
     return 0;
 }
-

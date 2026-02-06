@@ -13,7 +13,6 @@ una frase ingresada por el usuario:
 palabra es un char* independiente.
 1.6. Mostrar cada palabra junto con su longitud.
 1.7. Liberar toda la memoria dinámica correctamente.  
-
 */
 
 #include <iostream>
@@ -21,20 +20,18 @@ palabra es un char* independiente.
 #include <cctype>
 using namespace std;
 
-
 char* leerFrase (){
 
     char temp[100];        
     cout<<"Ingrese una frase: ";
     cin.getline (temp, 100);
 
-
     int len=strlen(temp);
     // realizar asignación dinámica
     // Asignación exacta: +1 para el carácter nulo '\0'
     char* frase = new char[len+1];  // reservamos memoria dinámica 
                                     // frase es la direccion de ese bloque que esta en el heap
-
+                                
     for (int i=0; i<len+1; i++){    // strcpy (frase, temp);
         frase[i]=temp[i];
     }
@@ -143,7 +140,7 @@ int main (){
 
     char* normalizada = normalizarFrase(frase); // debo liberar
 
-    int numPal = contarPalabra (normalizada);
+    int numPal = contarPalabra (frase);
 
     char** palabras = separarPalabras (normalizada, numPal);  // debo liberar
 
