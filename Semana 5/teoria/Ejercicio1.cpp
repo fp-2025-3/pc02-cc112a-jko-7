@@ -25,16 +25,7 @@ struct Estudiante
     float promedio;
 };
 
-
-
-int main (){
-
-    int N; 
-    cout<<"Ingrese la cantidad de estudiantes: ";
-    cin>>N;
-
-    Estudiante* estudiante = new Estudiante[N];
-
+void leerEstudiante (Estudiante* estudiante, int N){
     for (int i=0; i<N; i++){
         cout<<"Alumno "<<i+1<<endl;
         cout<<"Codigo: ";
@@ -42,7 +33,11 @@ int main (){
         cout<<"Promedio: ";
         cin>>estudiante[i].promedio;
     }
+}
 
+
+void mostrarAprobados(Estudiante* estudiante, int N){
+    
     cout<<"\nAlumnos aprobados: "<<endl;
 
     for (int i=0; i<N; i++){
@@ -54,7 +49,18 @@ int main (){
     }
 
     delete[] estudiante;
+}
 
+int main (){
+
+    int N; 
+    cout<<"Ingrese la cantidad de estudiantes: ";
+    cin>>N;
+
+    Estudiante* estudiante = new Estudiante[N];
+
+    leerEstudiante (estudiante, N);
+    mostrarAprobados (estudiante, N);
 
     return 0;
 }
