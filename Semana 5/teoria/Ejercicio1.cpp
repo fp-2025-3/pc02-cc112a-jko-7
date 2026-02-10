@@ -47,8 +47,6 @@ void mostrarAprobados(Estudiante* estudiante, int N){
             cout<<"Promedio: "<<estudiante[i].promedio<<endl;
         }
     }
-
-    delete[] estudiante;
 }
 
 int main (){
@@ -61,6 +59,8 @@ int main (){
 
     leerEstudiante (estudiante, N);
     mostrarAprobados (estudiante, N);
+
+    delete[] estudiante;
 
     return 0;
 }
