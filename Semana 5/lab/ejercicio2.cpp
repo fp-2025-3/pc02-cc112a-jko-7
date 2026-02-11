@@ -16,6 +16,10 @@ int main (){
 
     Punto* punto = new Punto[n];
 
+    /*
+    Punto p1, p2;       crear 2 instancias (objetos)
+    */
+
     cout<<"Ingrese las coordenadas del primer punto:"<<endl;
     cout<<"X: ";
     cin>>punto[0].x;
@@ -48,7 +52,6 @@ int main (){
 /*
 #include <iostream>
 #include <cmath>
-#include <string>
 
 using namespace std;
 
@@ -56,39 +59,38 @@ struct Punto {
     int x, y, z;
 };
 
+// Función para calcular distancia entre dos puntos (opcional, pero ayuda a generalizar)
+float calcularDistancia(Punto p1, Punto p2) {
+    return sqrt(pow(p2.x - p1.x, 2) + pow(p2.y - p1.y, 2) + pow(p2.z - p1.z, 2));
+}
+
 int main() {
-    // Diccionario de ordinales para los primeros puntos
-    string etiquetas[] = {"primer", "segundo", "tercer", "cuarto", "quinto"};
-    
     int n;
-    cout << "En este ejemplo usaremos maximo 5 puntos. ¿Cuantos desea? ";
+    cout << "Ingrese la cantidad de puntos: ";
     cin >> n;
 
+    // 1. Uso de puntero para arreglo dinámico
     Punto* puntos = new Punto[n];
 
+    // 2. Bucle para llenar los datos
     for (int i = 0; i < n; i++) {
-        // Si el índice está dentro de nuestro arreglo de etiquetas, usamos la palabra.
-        // Si no, usamos el número normal (ej: "punto 6").
-        if (i < 5) {
-            cout << "\nIngrese las coordenadas del " << etiquetas[i] << " punto:" << endl;
-        } else {
-            cout << "\nIngrese las coordenadas del punto " << i + 1 << ":" << endl;
-        }
-
+        cout << "\nIngrese coordenadas para el punto " << i + 1 << ":" << endl;
         cout << "X: "; cin >> puntos[i].x;
         cout << "Y: "; cin >> puntos[i].y;
         cout << "Z: "; cin >> puntos[i].z;
     }
 
-    // Cálculo de distancia entre el primer y segundo punto (como en tu código original)
+    // 3. Ejemplo de cálculo (Distancia entre el primer y último punto ingresado)
     if (n >= 2) {
-        float distancia = sqrt(pow((puntos[1].x - puntos[0].x), 2) + 
-                               pow((puntos[1].y - puntos[0].y), 2) + 
-                               pow((puntos[1].z - puntos[0].z), 2));
-        cout << "\nLa distancia entre el primer y segundo punto es: " << distancia << endl;
+        float d = calcularDistancia(puntos[0], puntos[n - 1]);
+        cout << "\nDistancia entre el punto 1 y el punto " << n << " es: " << d << endl;
+    } else {
+        cout << "\nSe necesitan al menos 2 puntos para calcular una distancia." << endl;
     }
 
+    // 4. ¡MUY IMPORTANTE! Liberar la memoria
     delete[] puntos;
+
     return 0;
 }
 
