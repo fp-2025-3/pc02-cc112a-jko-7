@@ -32,28 +32,12 @@ int main (){
         aux = aux->sig;
     }
 
+    // Liberar memoria
     while (cabeza != nullptr){
-        Producto temp = cabeza;
-        cabeza->
+        Producto* temp = cabeza;
+        cabeza = cabeza->sig;
         delete temp;
     }
-
-
-        cout<<"\nCodigo del producto: ";
-        cout<<cabeza->codigo<<endl;
-        cout<<"Precio del producto: ";
-        cout<<cabeza->precio<<endl;
-        cout<<"Codigo del producto: ";
-        cout<<cabeza->sig->codigo<<endl;
-        cout<<"Precio del producto: ";
-        cout<<cabeza->sig->precio<<endl;
     
-    
-
-    // Liberar memoria
-
-
-    
-
     return 0;
 }
