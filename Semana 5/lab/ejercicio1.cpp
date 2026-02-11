@@ -41,6 +41,7 @@ int main (){
     cout<<"El estudiante con la mayor nota es: "<<estudiante[nombreMax].nombre<<endl;
     cout<<"Nota: "<<notaMax<<endl;
 
+    delete[] estudiante;
 
     return 0;
 }

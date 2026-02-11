@@ -46,7 +46,6 @@ int main (){
     cout<<"La seleccion con mejor rendimiento es: Seleccion "<<seleccionMayor
         <<" Rendimiento: "<<fixed<<setprecision(1)<<seleccion[seleccionMayor].rendimiento<<endl;
 
-
     
     return 0;
 }
