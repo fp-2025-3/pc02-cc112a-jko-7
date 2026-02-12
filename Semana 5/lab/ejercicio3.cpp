@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
-#include <iomanip>
+#include <iomanip>  // setprecision
 using namespace std;
 
 struct Seleccion

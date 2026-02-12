@@ -1,93 +1,57 @@
 #include <iostream>
-#include <cmath>
 using namespace std;
 
-struct Punto
+struct Estudiante
 {
-    int x;
-    int y;
-    int z;
+    string nombre;
+    float nota;
 };
 
 
 int main (){
 
-    Punto punto[2];
+    int n;
+    cout << "Ingrese el numero de estudiantes: ";
+    cin>>n;
+
+    // CUIDADO
 
     /*
-    Punto p1, p2;       crear 2 instancias (objetos)
+    si tengo cin>>
+    y luego el getline()
+
+    debemos usar entre ellos cin.ignore() para limpiar el buffer
     */
 
-    cout<<"Ingrese las coordenadas del primer punto:"<<endl;
-    cout<<"X: ";
-    cin>>punto[0].x;
-    cout<<"Y: ";
-    cin>>punto[0].y;
-    cout<<"Z: ";
-    cin>>punto[0].z;
-    
-    
-    cout<<"Ingrese las coordenadas del segundo punto:"<<endl;
-    cout<<"X: ";
-    cin>>punto[1].x;
-    cout<<"Y: ";
-    cin>>punto[1].y;
-    cout<<"z: ";
-    cin>>punto[1].z;
+    cin.ignore();
 
+    Estudiante* estudiante = new Estudiante[n];
 
-    float distancia = sqrt(pow((punto[1].x-punto[0].x),2)+pow((punto[1].y-punto[0].y),2)+pow((punto[1].z-punto[0].z),2));
-    cout<<"La distancia entre los dos puntos es: "<<distancia<<endl;
+    float notaMax=0;
+    int indiceMax;
 
-    
-    return 0;
-}
+    for (int i=0; i<n; i++){
+        cout<<"Ingrese el nombre del estudiante "<<i+1<<": ";
+        getline(cin, estudiante[i].nombre);
 
-// GENERALIZANDO EL PROBLEMA 
+        cout<<"Ingrese la nota del estudiante "<<i+1<<": ";
+        cin>>estudiante[i].nota;
 
-/*
-#include <iostream>
-#include <cmath>
-
-using namespace std;
-
-struct Punto {
-    int x, y, z;
-};
-
-// Función para calcular distancia entre dos puntos (opcional, pero ayuda a generalizar)
-float calcularDistancia(Punto p1, Punto p2) {
-    return sqrt(pow(p2.x - p1.x, 2) + pow(p2.y - p1.y, 2) + pow(p2.z - p1.z, 2));
-}
-
-int main() {
-    int n;
-    cout << "Ingrese la cantidad de puntos: ";
-    cin >> n;
-
-    // 1. Uso de puntero para arreglo dinámico
-    Punto* puntos = new Punto[n];
-
-    // 2. Bucle para llenar los datos
-    for (int i = 0; i < n; i++) {
-        cout << "\nIngrese coordenadas para el punto " << i + 1 << ":" << endl;
-        cout << "X: "; cin >> puntos[i].x;
-        cout << "Y: "; cin >> puntos[i].y;
-        cout << "Z: "; cin >> puntos[i].z;
+        cin.ignore();
     }
 
-    // 3. Ejemplo de cálculo (Distancia entre el primer y último punto ingresado)
-    if (n >= 2) {
-        float d = calcularDistancia(puntos[0], puntos[n - 1]);
-        cout << "\nDistancia entre el punto 1 y el punto " << n << " es: " << d << endl;
-    } else {
-        cout << "\nSe necesitan al menos 2 puntos para calcular una distancia." << endl;
+    for (int i=0; i<n; i++){
+        if (notaMax<estudiante[i].nota){
+            notaMax=estudiante[i].nota;
+            indiceMax=i;
+        }
     }
 
-    // 4. ¡MUY IMPORTANTE! Liberar la memoria
-    delete[] puntos;
+    cout<<"El estudiante con la mayor nota es: "<<estudiante[indiceMax].nombre<<endl;
+    cout<<"Nota: "<<estudiante[indiceMax].nota<<endl;
+
+    // NO OLVIDAR LIBERAR MEMORIA
+    delete[] estudiante;
 
     return 0;
 }
-
-*/

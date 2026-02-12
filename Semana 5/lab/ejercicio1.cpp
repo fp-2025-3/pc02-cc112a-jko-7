@@ -1,47 +1,83 @@
 #include <iostream>
+#include <cmath>
 using namespace std;
 
-struct Estudiante
+struct Punto
 {
-    string nombre;
-    float nota;
+    float x,y,z;
 };
-
 
 int main (){
 
+    Punto p1,p2;    // crear 2 instancias (objetos)
+
+    cout<<"Ingrese las coordenadas del primer punto:"<<endl;
+    cout<<"X: ";
+    cin>>p1.x;
+    cout<<"Y: ";
+    cin>>p1.y;
+    cout<<"Z: ";
+    cin>>p1.z;
+    
+    cout<<"Ingrese las coordenadas del segundo punto:"<<endl;
+    cout<<"X: ";
+    cin>>p2.x;
+    cout<<"Y: ";
+    cin>>p2.y;
+    cout<<"z: ";
+    cin>>p2.z;
+
+    float distancia = sqrt(pow((p2.x-p1.x),2)+pow((p2.y-p1.y),2)+pow((p2.z-p1.z),2));
+    cout<<"La distancia entre los dos puntos es: "<<distancia<<endl;
+    
+    return 0;
+}
+
+// GENERALIZANDO EL PROBLEMA 
+
+/*
+#include <iostream>
+#include <cmath>
+
+using namespace std;
+
+struct Punto {
+    int x, y, z;
+};
+
+// Función para calcular distancia entre dos puntos (opcional, pero ayuda a generalizar)
+float calcularDistancia(Punto p1, Punto p2) {
+    return sqrt(pow(p2.x - p1.x, 2) + pow(p2.y - p1.y, 2) + pow(p2.z - p1.z, 2));
+}
+
+int main() {
     int n;
-    cout << "Ingrese el numero de estudiantes: ";
-    cin>>n;
+    cout << "Ingrese la cantidad de puntos: ";
+    cin >> n;
 
-    cin.ignore();
+    // 1. Uso de puntero para arreglo dinámico
+    Punto* puntos = new Punto[n];
 
-    Estudiante* estudiante = new Estudiante[n];
-
-    float notaMax=0;
-    int nombreMax;
-
-    for (int i=0; i<n; i++){
-        cout<<"Ingrese el nombre del estudiante "<<i+1<<": ";
-        getline(cin, estudiante[i].nombre);
-
-        cout<<"Ingrese la nota del estudiante "<<i+1<<": ";
-        cin>>estudiante[i].nota;
-
-        cin.ignore();
+    // 2. Bucle para llenar los datos
+    for (int i = 0; i < n; i++) {
+        cout << "\nIngrese coordenadas para el punto " << i + 1 << ":" << endl;
+        cout << "X: "; cin >> puntos[i].x;
+        cout << "Y: "; cin >> puntos[i].y;
+        cout << "Z: "; cin >> puntos[i].z;
     }
 
-    for (int i=0; i<n; i++){
-        if (notaMax<estudiante[i].nota){
-            notaMax=estudiante[i].nota;
-            nombreMax=i;
-        }
+    // 3. Ejemplo de cálculo (Distancia entre el primer y último punto ingresado)
+    if (n >= 2) {
+        float d = calcularDistancia(puntos[0], puntos[n - 1]);
+        cout << "\nDistancia entre el punto 1 y el punto " << n << " es: " << d << endl;
+    } else {
+        cout << "\nSe necesitan al menos 2 puntos para calcular una distancia." << endl;
     }
 
-    cout<<"El estudiante con la mayor nota es: "<<estudiante[nombreMax].nombre<<endl;
-    cout<<"Nota: "<<notaMax<<endl;
-
-    delete[] estudiante;
+    // 4. ¡MUY IMPORTANTE! Liberar la memoria
+    delete[] puntos;
 
     return 0;
 }
+
+*/
