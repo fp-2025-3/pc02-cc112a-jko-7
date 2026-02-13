@@ -15,13 +15,15 @@ int main (){
 
     // Insertar producto al inicio
     for (int i=0; i<2; i++){
-        Producto* nuevo = new Producto[i];
+        Producto* nuevo = new Producto;
+
         cout<<"Ingrese codigo del producto: ";
         cin>>nuevo->codigo;
         cout<<"Ingrese precio del producto: ";
         cin>>nuevo->precio;
-        nuevo->sig=cabeza;
-        cabeza=nuevo;
+
+        nuevo->sig = cabeza;
+        cabeza = nuevo;
     }
 
     // Mostrar los productos
