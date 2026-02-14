@@ -1,8 +1,11 @@
 #include <iostream>
 #include <ctime>
+#include <string>
 #include <cstdlib>
 #include <iomanip>
 using namespace std;
+
+const int N=5;  // Definir una constante ayuda a cambiar la cantidad de equipos facilmente
 
 struct Seleccion
     {
@@ -18,15 +21,10 @@ int main (){
 
     srand(time(0));
 
-    Seleccion seleccion[5];
+    Seleccion seleccion[N];
 
-    seleccion[0].nombre="Pais_1";
-    seleccion[1].nombre="Pais_2";
-    seleccion[2].nombre="Pais_3";
-    seleccion[3].nombre="Pais_4";
-    seleccion[4].nombre="Pais_5";
-
-    for (int i=0; i<5; i++){
+    for (int i=0; i<N; i++){
+        seleccion[i].nombre="Pais_"+ to_string(i+1);
         seleccion[i].PG=rand()%101;
         seleccion[i].PE=rand()%(101-seleccion[i].PG);
         seleccion[i].PP=100-seleccion[i].PG-seleccion[i].PE;
@@ -34,56 +32,84 @@ int main (){
         seleccion[i].puntajeTotal = 3*seleccion[i].PG+seleccion[i].PE;
         seleccion[i].rendimiento=((float)seleccion[i].puntajeTotal/300)*100;
 
-        /*
-        en cada partido los goles anotados por un equipo estaran en el rango de 0 a 5,
-        en un partido ganado gf>gc
-        en un partido perdido gf<gc
-        en un partido empatado gf=gc
-        */             
         seleccion[i].GF=0;
         seleccion[i].GC=0;
 
+        // Simular cada partido individualmente
+        // Partidos ganados
+        for (int j=0; j<seleccion[i].PG; j++){
+            int GF, GC;
+            do {
+                GF = rand()%6;      // GF (goles a favor)
+                GC = rand()%6;      // GC (goles en contra)
+            } while(GF<=GC);  // Asegurar que GF>GC en partidos ganados
 
-        seleccion[i].GF=seleccion[i].PG*(rand()%3+3)+seleccion[i].PE*3;
-        seleccion[i].GC=seleccion[i].PP*(rand()%2)+seleccion[i].PE*3; 
-        seleccion[i].diferenciaGoles= seleccion[i].GF-seleccion[i].GC;
+            seleccion[i].GF+=GF;
+            seleccion[i].GC+=GC;            
+        }
 
+        // Partidos empatados
+        for (int j=0; j<seleccion[i].PE; j++){
+            int goles = rand()%6;   
+        
+            seleccion[i].GF+=goles;
+            seleccion[i].GC+=goles;            
+        }
+
+        // Partidos perdidos
+        for (int j=0; j<seleccion[i].PP; j++){
+            int GF, GC;
+            do {
+                GF = rand()%6;      
+                GC = rand()%6;      
+            } while(GF>=GC);  // Asegurar que GF<GC en partidos perdidos
+
+            seleccion[i].GF+=GF;
+            seleccion[i].GC+=GC;            
+        }
+
+        seleccion[i].diferenciaGoles = seleccion[i].GF - seleccion[i].GC;
 
     }
+    
+    // Ordenamiento con criterios de desempate
+    for (int i=0; i<N-1; i++){
+        for (int j=0; j<N-1-i;j++){
+            bool intercambiar = false;
 
-    for (int i=0; i<5-1; i++){
-        for (int j=0; j<5-1;j++){
-            if (seleccion[j].puntajeTotal<seleccion[j+1].puntajeTotal){
-                swap(seleccion[j].puntajeTotal, seleccion[j+1].puntajeTotal);
-                swap(seleccion[j].PG, seleccion[j+1].PG);
-                swap(seleccion[j].PE, seleccion[j+1].PE);
-                swap(seleccion[j].PP, seleccion[j+1].PP);
-                swap(seleccion[j].nombre, seleccion[j+1].nombre);
-                swap(seleccion[j].rendimiento, seleccion[j+1].rendimiento);
-                swap(seleccion[j].GF, seleccion[j+1].GF);
-                swap(seleccion[j].GC, seleccion[j+1].GC);
-                swap(seleccion[j].diferenciaGoles, seleccion[j+1].diferenciaGoles);
+            if (seleccion[j].puntajeTotal < seleccion[j+1].puntajeTotal){
+                intercambiar = true;
+            } 
+            else if (seleccion[j].puntajeTotal == seleccion[j+1].puntajeTotal){
+                if (seleccion[j].diferenciaGoles < seleccion[j+1].diferenciaGoles){
+                    intercambiar = true;
+                }
+                else if (seleccion[j].diferenciaGoles == seleccion[j+1].diferenciaGoles){
+                    if (seleccion[j].GF < seleccion[j+1].GF){
+                        intercambiar = true;
+                    }
+                }
+            }
+                
+            if (intercambiar){
+                swap(seleccion[j], seleccion[j+1]);
             }
         }
     }
     
-
     cout<<"Seleccion\tPG\tPE\tPP\tGF\tGC\tDG\tPts\tRend(%)"<<endl;
-    cout<<"-----------------------------------------------------------------------"<<endl;
+    cout<<"---------------------------------------------------------------------------------"<<endl;
 
-    for (int i=0; i<5; i++){
+    for (int i=0; i<N; i++){
         cout<<seleccion[i].nombre<<"\t\t"<<seleccion[i].PG<<"\t"<<seleccion[i].PE<<"\t"
             <<seleccion[i].PP<<"\t"<<seleccion[i].GF<<"\t"<<seleccion[i].GC<<"\t"
             <<seleccion[i].diferenciaGoles<<"\t"<<seleccion[i].puntajeTotal<<"\t"
             <<fixed<<setprecision(1)<<seleccion[i].rendimiento<<endl;
-
     }
 
-    cout<<"CAMPEON: "<<seleccion[0].nombre<<" | Puntaje: "<<seleccion[0].puntajeTotal
+    cout<<"\nCAMPEON: "<<seleccion[0].nombre<<" | Puntaje: "<<seleccion[0].puntajeTotal
                     <<" | DG: "<<seleccion[0].diferenciaGoles<<" | Rendimiento: "
-                    <<seleccion[0].rendimiento<<endl;
-
-
+                    <<seleccion[0].rendimiento<<"%"<<endl;
 
     return 0;
 }
