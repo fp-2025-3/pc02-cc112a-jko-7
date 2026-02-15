@@ -1,11 +1,5 @@
 #include <iostream>
-#include <string>
-#include <ctime>
-#include <cstdlib>
-#include <cctype>
 #include <cstring>
-#include <iomanip>
-#include <cmath>
 using namespace std;
 
 struct Item
@@ -23,42 +17,98 @@ struct Pedido
     int cantidadItems;
 };
 
+Item crearItem(const char* descripcion, int cantidad, double precio){
+    Item item;
+
+    // Reservar memoria dinamica para la descripción
+    item.descripcion  = new char[strlen(descripcion)+1];
+    strcpy (item.descripcion, descripcion);
+
+    item.cantidad = cantidad;
+    item.precioUnitario = precio;
+
+    return item;
+}
 
 Pedido* crearPedido(int numero, const char* cliente, int cantidadItems){
-    // Reservar memoria dinamica para un pedido
+    // Reservar memoria dinamica para el pedido
+    Pedido* p = new Pedido;
+
+    p->numeroPedido = numero;
+    p->cantidadItems = cantidadItems;
+
     // Reservar memoria para nombreCliente
+    p->nombreCliente = new char[strlen(cliente)+1];
+    strcpy(p->nombreCliente, cliente);
+
     // Reservar un arreglo dinamico Item
-    // Inicializar los item llamando a una funcion
+    p->items = new Item[cantidadItems];
 
+    return p;
 }
-
-Item crearItem(const char* descripcion, int cantidad, double precio){
-    
-}
-
 
 double calcularTotal(const Pedido* p){
-    // total = sumatoria de cantidad * precioUnitario
 
+    double total=0;
 
+    for (int i=0; i<p->cantidadItems; i++){
+        total+=p->items[i].cantidad * p->items[i].precioUnitario;
+    }
+
+    return total;
 }
 
 Item* itemMasCaro(Pedido* p){
-    // debe retornar un puntero al item con mayor precio unitario
 
+    if (p->cantidadItems==0){
+        return nullptr;
+    }
+
+    int indice=0;
+
+    for (int i=0; i<p->cantidadItems; i++){
+        if (p->items[i].precioUnitario > p->items[indice].precioUnitario){
+            indice=i;
+        }
+    }
+
+    return &(p->items[indice]);
 }
 
 void liberarPedido(Pedido* p){
-    // liberar memoria
+    
+    for (int i=0; i<p->cantidadItems; i++){
+        delete[] p->items[i].descripcion;
+    }
 
+    delete[] p->items;
+    delete[] p->nombreCliente;
+    delete p;
 }
-
 
 int main (){
 
+    Pedido* pedido = crearPedido(101, "Carlos Perez", 3);
 
+    pedido->items[0] = crearItem("Laptop", 1, 100);
+    pedido->items[1] = crearItem("Mouse", 2, 200);
+    pedido->items[2] = crearItem("Teclado", 3, 300);
 
+    cout<<"Pedido N°: "<<pedido->numeroPedido<<endl;
+    cout<<"Cliente: "<<pedido->nombreCliente<<endl;
 
+    cout<<"\nItems:"<<endl;
+    for (int i=0; i<pedido->cantidadItems; i++){
+        cout<<"- "<<pedido->items[i].descripcion
+            <<" | Cant: "<<pedido->items[i].cantidad
+            <<" | Precio: "<<pedido->items[i].precioUnitario<<endl;
+    }
+
+    cout<<"\nTotal: "<<calcularTotal(pedido)<<endl;
+    Item* caro = itemMasCaro(pedido);
+    cout<<"\nItem mas caro: "<<caro->descripcion<<" | Precio: "<<caro->precioUnitario<<endl;  
+
+    liberarPedido(pedido);
 
     return 0;
 }
