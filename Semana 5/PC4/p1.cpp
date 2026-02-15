@@ -8,67 +8,86 @@ struct Polinomio
     int grado;
 };
 
+// Función auxiliar para crear polinomios
+Polinomio crearPolinomio(int grado, float coeficientes[]){
+
+    Polinomio p;
+    p.grado = grado;
+    p.coef = new float[grado+1];
+
+    for (int i=0; i<=grado; i++){
+        p.coef[i] = coeficientes[i];
+    }
+
+    return p;
+}
+
+void imprimirPolinomio(float* coefs, int grado){
+    bool primero = true;
+    for (int i=grado; i>=0; i--){
+        if (coefs[i] != 0){
+            if (!primero){
+                cout<<(coefs[i]>0 ? " + ":" - ");
+                cout<<(coefs[i]>0 ? coefs[i]:-coefs[i]);
+            } else {
+                cout<<coefs[i];
+            }
+
+            if (i>0){
+                cout<<"x^"<<i;
+            }
+            primero=false;
+        }
+    }
+}
+
 void sumaPolinomios(Polinomio* polinomio, int n){
 
-    int gradoMax = n;
+    // Encontrar grado máximo
+    int gradoMax = 0;
 
-    for (int i=gradoMax; i>=0; i--){
-
-        float suma = 0;
-
-        if (i<=n){
-            suma+=polinomio[0].coef[i];
+    for (int i=0; i<n; i++){
+        if (gradoMax < polinomio[i].grado){
+            gradoMax = polinomio[i].grado;
         }
+    }
 
-        
-        if (i<=n){
-            suma+=polinomio[1].coef[i];
-        }
+    float* suma = new float[gradoMax+1]();  // inicializa suma en ceros
 
-        if (i<=n){
-            suma+=polinomio[2].coef[i];
-        }
-
-        if (i==0){
-            cout<<suma<<endl;
-        } else {
-            cout<<suma<<"x^"<<i<<" + ";
+    // Sumar todos los polinomios
+    for (int i=0; i<n; i++){
+        for (int j=0; j<=polinomio[i].grado; j++){
+            suma[j] += polinomio[i].coef[j];
         }
     }   
 
+    imprimirPolinomio(suma, gradoMax);
+    cout<<endl;
+    delete[] suma;
 }
-    
-
 
 void multiplicarPolinomio (Polinomio* polinomio, int n){
 
-    int gradoProducto=2*n;
-    float* producto = new float[gradoProducto+1];
+    int gradoProd = 0;
 
-    for (int i=0; i<=gradoProducto; i++){
-        producto[i]=0;
+    for (int i=0; i<n; i++){
+        gradoProd+=polinomio[i].grado;
     }
 
+    float* producto = new float[gradoProd+1]();  // inicializa productos en ceros
+
     // Multiplicar
-    for (int i=0; i<=n; i++){
-        for (int j=0; j<=n; j++){
-            for (int k=0; k<=n; k++){
+    for (int i=0; i<=polinomio[0].grado; i++){
+        for (int j=0; j<=polinomio[1].grado; j++){
+            for (int k=0; k<=polinomio[2].grado; k++){
                 producto[i+j+k]+=polinomio[0].coef[i]*polinomio[1].coef[j]*polinomio[2].coef[k];
             }
         }
-        
     }
 
-    for (int i = gradoProducto; i >= 0; i--){
-        if (i == 0){
-            cout << producto[i] << endl;
-        } else {
-            cout << producto[i] << "x^" << i << " + ";
-        }
-    }
-
+    imprimirPolinomio(producto, gradoProd);
+    cout<<endl;
     delete[] producto;
-
 }
 
 
@@ -76,44 +95,29 @@ int main (){
 
     Polinomio polinomio[3];
 
-    polinomio[0].coef = new float[2];
-    polinomio[0].coef[0] = 1;
-    polinomio[0].coef[1] = 0;
-    polinomio[0].coef[2] = 3;
-    
-    polinomio[1].coef = new float[2];
-    polinomio[1].coef[0] = 5;
-    polinomio[1].coef[1] = -4;
-    polinomio[1].coef[2] = 0;
+    float coefs1[] = {3,0,1};   // 1x^2 + 3
+    float coefs2[] = {5,-4};    // -4x^1 + 5
+    float coefs3[] = {1,0,3};   // 3x^2 + 1
 
-    polinomio[2].coef = new float[2];
-    polinomio[2].coef[0] = 3;
-    polinomio[2].coef[1] = 0;
-    polinomio[2].coef[2] = 1;
+    polinomio[0] = crearPolinomio(2, coefs1);
+    polinomio[1] = crearPolinomio(1, coefs2);
+    polinomio[2] = crearPolinomio(2, coefs3);
 
-    int k=1;
-    for (int i=2; i>=0; i--){
-        cout<<"Polinomio "<<k++<<": ";
-        for (int j=2; j>=0; j--){
-            if (polinomio[i].coef[j]==0){
-                continue;
-            } else {
-                if (j==0){
-                cout<<polinomio[i].coef[j];
-                } else{
-                    cout<<polinomio[i].coef[j]<<"x^"<<j<<" + ";
-                }
-            }
-        }
+    for (int i=0; i<3; i++){
+        cout<<"Polinomio "<<i+1<<": ";
+        imprimirPolinomio(polinomio[i].coef,polinomio[i].grado);
         cout<<endl;
     }
 
-    cout<<"Suma de los tres polinomios: ";
-    sumaPolinomios(polinomio,2);
+    cout<<"\nSuma de los tres polinomios: ";
+    sumaPolinomios(polinomio,3);
 
-    cout<<"Producto de los tres polinomios: ";   
-    multiplicarPolinomio(polinomio,2);
+    cout<<"\nProducto de los tres polinomios: ";   
+    multiplicarPolinomio(polinomio,3);
 
+    for (int i=0; i<3; i++){
+        delete[] polinomio[i].coef;
+    }
 
     return 0;
 }
