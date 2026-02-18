@@ -2,14 +2,12 @@
 #include <fstream>
 using namespace std;
 
-// Definición
 struct Estudiante {
     int codigo;
     char nombre[50];
     float promedio;
 };
 
-// Función para escribir archivo
 void guardarTexto(Estudiante* arr, int n) {
     ofstream archivo("estudiantes.txt");
 
@@ -22,6 +20,13 @@ void guardarTexto(Estudiante* arr, int n) {
     archivo.close();
     cout<<"Archivo guardado correctamente\n";
 }
+
+/*
+arr es un puntero a estructura
+Se usa indexación como arreglo
+No se guarda la estructura como bloque
+Se serializa campo por campo
+*/
 
 int main (){
     int n;
