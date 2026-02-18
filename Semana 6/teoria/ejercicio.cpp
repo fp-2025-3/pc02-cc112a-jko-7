@@ -1,3 +1,11 @@
+/*
+Crear un sistema que:
+Permita registrar estudiantes dinámicamente.
+Los guarde en binario.
+Permita modificar uno usando acceso aleatorio.
+Permita mostrar todos.
+Calcule promedio.
+*/
 #include <iostream>
 #include <fstream>
 using namespace std;
