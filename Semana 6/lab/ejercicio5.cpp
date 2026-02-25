@@ -12,9 +12,9 @@ int fibonacci(int n){
 }
 
 
-void escribirFibonacciBinario(const char* nombreArchivo){
+void escribirFibonacciBinario(){
 
-    ofstream archivo (nombreArchivo, ios::binary);
+    ofstream archivo ("output/fibonacci.bin", ios::binary);
 
     if (!archivo){
         cout<<"Error al abrir el archivo"<<endl;
@@ -31,9 +31,9 @@ void escribirFibonacciBinario(const char* nombreArchivo){
 
 }
 
-void leerFibonacciBinario(const char* nombreArchivo){
+void leerFibonacciBinario(){
 
-    ifstream archivo (nombreArchivo, ios::binary);
+    ifstream archivo ("output/fibonacci.bin", ios::binary);
 
     if (!archivo){
         cout<<"Error al abrir el archivo"<<endl;
@@ -43,7 +43,7 @@ void leerFibonacciBinario(const char* nombreArchivo){
     int valor;
     int i=0;
 
-    cout<<"\nFuncion leerFibonacciBinario: "<<endl;
+    cout<<"\nFuncion leerFibonacciBinario:"<<endl;
     while (archivo.read((char*)&valor, sizeof(valor)))
     {
         cout<<"Termino "<<i+1<<": "<<valor<<endl;
@@ -56,11 +56,8 @@ void leerFibonacciBinario(const char* nombreArchivo){
 
 int main (){
 
-    const char* nombreArchivo = "output/fibonacci.bin";
-
-    escribirFibonacciBinario(nombreArchivo);
-    leerFibonacciBinario(nombreArchivo);
-
+    escribirFibonacciBinario();
+    leerFibonacciBinario();
     
     return 0;
 }
