@@ -12,7 +12,7 @@ struct Venta {
 
 int main (){
 
-    ifstream archivoEntrada ("entrada/ventas.dat", ios::binary);
+    ifstream archivoEntrada ("entradas/ventas.dat", ios::binary);
     ofstream archivoSalida ("output/reporte.txt");
 
     if(!archivoEntrada || !archivoSalida){
@@ -31,7 +31,7 @@ int main (){
     archivoEntrada.read((char*)&totalRegistros, sizeof(int));
 
     Venta v;
-    Venta ventasSospechosas[100];
+    Venta ventasSospechosas[200];
     int totalSospechosas=0;
 
     for (int i=0; i<totalRegistros; i++){
@@ -63,16 +63,16 @@ int main (){
     archivoSalida<<"\nTotal de registros: "<<totalRegistros<<endl;
     archivoSalida<<"\nMONTO TOTAL VENDIDO:"<<endl;
     archivoSalida<<"S/. "<<montoTotal<<endl;
-    archivoSalida<<"\n---------------------------------"<<endl;
+    archivoSalida<<"\n---------------------------------------"<<endl;
     archivoSalida<<"VENDEDOR CON MAYOR RECAUDACION:"<<endl;
     archivoSalida<<"ID Vendedor: "<<idVendedorMax<<endl;
     archivoSalida<<"Total vendido: S/. "<<totalVendidoMax<<endl;
-    archivoSalida<<"\n---------------------------------"<<endl;
+    archivoSalida<<"\n---------------------------------------"<<endl;
     archivoSalida<<"PRODUCTO MÁS VENDIDO:"<<endl;
     archivoSalida<<"ID Producto: "<<idProductoMax<<endl;
     archivoSalida<<"Total unidades: "<<cantidadMax<<endl;
-    archivoSalida<<"\n---------------------------------"<<endl;
-    archivoSalida << "VENTAS SOSPECHOSAS (cantidad > 100):" << endl;
+    archivoSalida<<"\n---------------------------------------"<<endl;
+    archivoSalida << "VENTAS SOSPECHOSAS (cantidad > 100):" <<endl<<endl;
 
     for (int i = 0; i < totalSospechosas; i++) {
         archivoSalida << "ID Venta: " << ventasSospechosas[i].idVenta
