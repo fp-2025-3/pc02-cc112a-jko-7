@@ -7,13 +7,13 @@ S/. 530221
 
 ---------------------------------------
 VENDEDOR CON MAYOR RECAUDACION:
-ID Vendedor: 6
-Total vendido: S/. 8050.5
+ID Vendedor: 9
+Total vendido: S/. 71382.9
 
 ---------------------------------------
 PRODUCTO MÁS VENDIDO:
-ID Producto: 10
-Total unidades: 150
+ID Producto: 14
+Total unidades: 1114
 
 ---------------------------------------
 VENTAS SOSPECHOSAS (cantidad > 100):

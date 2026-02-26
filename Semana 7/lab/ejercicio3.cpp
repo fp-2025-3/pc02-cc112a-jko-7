@@ -15,25 +15,31 @@ int main (){
     ifstream archivoEntrada ("entradas/ventas.dat", ios::binary);
     ofstream archivoSalida ("output/reporte.txt");
 
-    if(!archivoEntrada || !archivoSalida){
-        cout<<"Error no se abrio correctamente."<<endl;
+    if(!archivoEntrada){
+        cout<<"Error no se abrio correctamente archivoEntrada."<<endl;
         return 1;
     }
 
-    float montoTotal=0;
-    float totalVenta=0;
-    float totalVendidoMax=0;
-    int idVendedorMax=0;    
-    int cantidadMax=0;
-    int idProductoMax=0; 
+    if(!archivoSalida){
+        cout<<"Error no se abrio correctamente archivoSalida."<<endl;
+        return 1;
+    }
+   
     int totalRegistros=0;
-
     archivoEntrada.read((char*)&totalRegistros, sizeof(int));
 
-    Venta v;
+    // Asumimos max 1000 (IDs del 1 al 1000)
+    double totalPorVendedor[1001]={0};
+    int unidadesPorProducto[1001]={0};
+
+    double montoTotal=0;
     Venta ventasSospechosas[200];
     int totalSospechosas=0;
 
+    double totalVenta=0;
+    
+    Venta v;
+    
     for (int i=0; i<totalRegistros; i++){
 
         archivoEntrada.read((char*)&v, sizeof(Venta));
@@ -41,23 +47,41 @@ int main (){
         totalVenta=v.cantidad*v.precioUnitario;
         montoTotal+=totalVenta;
 
-
-        if(totalVendidoMax<totalVenta){
-            totalVendidoMax=totalVenta;
-            idVendedorMax=v.idVendedor;
+        // Acumular por vendedor
+        if(v.idVendedor>=0){
+            totalPorVendedor[v.idVendedor]+=totalVenta;
         } 
 
-        if (cantidadMax<v.cantidad){
-            cantidadMax=v.cantidad;
-            idProductoMax=v.idProducto;
+        // Acumular por producto
+        if (v.idProducto>=0){
+            unidadesPorProducto[v.idProducto]+=v.cantidad;
         }
 
-        if (v.cantidad>100 && totalSospechosas<100){
+        // Ventas sospechosas
+        if (v.cantidad>100){
             ventasSospechosas[totalSospechosas++] = v;
         }
-        
     }
-    
+
+    // Buscar vendedor con mayor recaudación
+    double totalVendidoMax=0;
+    int idVendedorMax=0; 
+    for (int i=0; i<1001; i++){
+        if (totalPorVendedor[i]>totalVendidoMax){
+            totalVendidoMax=totalPorVendedor[i];
+            idVendedorMax=i;
+        }
+    }
+
+    // Buscar producto más vendido por cantidad total
+    int cantidadMax=0;
+    int idProductoMax=0; 
+    for (int i=0; i<1001; i++){
+        if (unidadesPorProducto[i]>cantidadMax){
+            cantidadMax=unidadesPorProducto[i];
+            idProductoMax=i;
+        }
+    }
 
     archivoSalida<<"--- REPORTE GENERAL DE VENTAS ----"<<endl;
     archivoSalida<<"\nTotal de registros: "<<totalRegistros<<endl;
