@@ -39,7 +39,7 @@ int main(){
     double totalPorVendedor[1000] = {0};
     int unidadesPorProducto[1000] = {0};
 
-    float montoTotal=0;
+    double montoTotal=0;
     Venta ventasSospechosas[200];
     int totalSospechosas=0;
 
