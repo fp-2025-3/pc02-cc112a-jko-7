@@ -20,7 +20,7 @@ int main (){
         return 1;
     }
 
-    int totaldeEstudientes=0;
+    int totaldeEstudiantes=0;
     float promedioGeneral=0;
     float suma=0;
     float estudianteMayorPromedio=-999;
@@ -28,20 +28,26 @@ int main (){
     int codigo;
     string condicion;
     string nombre;
+    string nombreMayorPromedio, nombreMenorPromedio;  // agregando nombre y codigo
+    int codigoMayorPromedio, codigoMenorPromedio;
     float n1,n2,n3;
     
     while(archivoEntrada>>codigo>>nombre>>n1>>n2>>n3){
 
-        totaldeEstudientes++;
+        totaldeEstudiantes++;
         float promedio=(n1+n2+n3)/3;
         suma+=promedio;
 
         if (promedio>estudianteMayorPromedio){
             estudianteMayorPromedio=promedio;
+            nombreMayorPromedio=nombre;
+            codigoMayorPromedio = codigo;
         }
 
         if (promedio<estudianteMenorPromedio){
             estudianteMenorPromedio=promedio;
+            nombreMenorPromedio=nombre;
+            codigoMenorPromedio=codigo;
         }
 
         if (n1<5 || n2<5 || n3<5){
@@ -56,12 +62,21 @@ int main (){
 
     }
 
-    promedioGeneral=suma/totaldeEstudientes;
+    // agregamos una validacion
+    if (totaldeEstudiantes>0){
+        promedioGeneral=suma/totaldeEstudiantes;
+    }
     
-    archivoSalida<<"\nTotal de estudiantes: "<<totaldeEstudientes<<endl;
+    
+    archivoSalida<<"\nTotal de estudiantes: "<<totaldeEstudiantes<<endl;
     archivoSalida<<"Promedio general del curso: "<<promedioGeneral<<endl;
-    archivoSalida<<"Estudiante con mayor promedio: "<<estudianteMayorPromedio<<endl;
-    archivoSalida<<"Estudiante con menor promedio: "<<estudianteMenorPromedio<<endl;
+    archivoSalida<<"Estudiante con mayor promedio: "<<endl;
+    archivoSalida<<codigoMayorPromedio<<" "<<nombreMayorPromedio<<" "<<estudianteMayorPromedio<<endl;
+    archivoSalida<<"Estudiante con menor promedio: "<<endl;
+    archivoSalida<<codigoMenorPromedio<<" "<<nombreMenorPromedio<<" "<<estudianteMenorPromedio<<endl;
+
+    archivoEntrada.close();
+    archivoSalida.close();
 
     return 0;
 }
