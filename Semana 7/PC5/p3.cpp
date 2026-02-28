@@ -5,6 +5,9 @@ using namespace std;
 
 int main(){
 
+    const int COLS = 80;
+    const int FILAS = 21;    
+
     ofstream archivo ("output/grafico.txt");
 
     if (!archivo){
@@ -12,36 +15,47 @@ int main(){
         return 1;
     }
 
-    float resul[180];
+    // Crear una cuadricula vacia (rellenar con espacios)
+    char cuadricula [FILAS][COLS];
+    for (int i=0; i<FILAS; i++){
+        for (int j=0; j<COLS; j++){
+            cuadricula[i][j]=' ';
+        }
+    }
 
-    for (int j=0; j<180; j++){
-        resul[j]=sin(5*j);
+    // Dibujar eje X (fila del medio = fila 10, donde valor = 0)
+    int ejeX = FILAS/2;   // fila 10
+    for (int j=0; j<COLS; j++){
+        cuadricula[ejeX][j] = '-';
+    }
 
+    // Dibujar eje Y (columna 0)
+    for (int i=0; i<FILAS; i++){
+        cuadricula[i][0]='|';
     }
     
+    // Evaluar f(x)=sin(5x) en 80 puntos igualmente espaciados en [0, 2*PI]
+    for (int j=0; j<COLS; j++){
+        double x = j*(2.0*M_PI)/(COLS-1); // x va de 0 a 2*PI
+        double fx = sin(5.0*x);             
 
-    for (int i=0; i<10; i++){
-        archivo<<"|"<<endl;
+        // Convertimos valor f(x) a fila:
+        // fx =  1  --> fila 0  (arriba)
+        // fx =  0  --> fila 10 (medio)
+        // fx = -1  --> fila 20 (abajo)
+        int fila = (int)round((1.0-fx)/2.0*(FILAS-1));
 
+        cuadricula[fila][j] = '*';
     }
 
-    for (int i=0; i<80; i++){
-        archivo<<"-";
-
-    }
-    cout<<endl;
-
-    for (int i=0; i<10; i++){
-        archivo<<"|"<<endl;
-
-
+    for (int i=0; i<FILAS; i++){
+        for (int j=0; j<COLS; j++){
+            archivo<<cuadricula[i][j];
+        }
+        archivo<<endl;
     }
 
-
-
-
-    
-
+    archivo.close();  
 
     return 0;
 }
