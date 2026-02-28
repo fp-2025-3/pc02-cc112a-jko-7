@@ -14,47 +14,42 @@ int main(){
     fstream archivo("input/empleados.dat", ios::in | ios::out | ios::binary);
 
     if (!archivo){
-        cout << "Error no se abrio correctamente el archivo" << endl;
+        cout << "Error no se abrio correctamente el archivo." << endl;
         return 1;
     }
 
     Empleado emp;
-
     int idEmpleado;
-    int nuevoSalario;
-    int posicion=0;
+    double nuevoSalario;
 
     cout<<"Ingrese ID de empleado: ";
     cin>>idEmpleado;
 
-    while (archivo.read((char*)&emp, sizeof(Empleado)))
-    {
-        if (idEmpleado == emp.id)
-        {
-            cout<<"\n--- DATOS DEL EMPLEADO ---"<<endl;
-            cout<<"ID: "<<emp.id<<endl;
-            cout<<"Nombre: "<<emp.nombre<<endl;
-            cout<<"Salario: "<<emp.salario<<endl;
+    // Calcular posición directamente
+    int posicion=(idEmpleado-1)*sizeof(Empleado);
+    archivo.seekg(posicion, ios::beg);
 
-            break;
-        }
-        posicion++;
-    }
-
-    if (idEmpleado != emp.id)
-    {
-        cout<<"ID invalido."<<endl;
+    if (!archivo.read((char*)&emp, sizeof(Empleado)) || emp.id != idEmpleado){
+        cout << "ID inválido o no encontrado." << endl;
         return 1;
     }
+
+    cout<<"\n--- DATOS DEL EMPLEADO ---"<<endl;
+    cout<<"ID: "<<emp.id<<endl;
+    cout<<"Nombre: "<<emp.nombre<<endl;
+    cout<<"Salario: "<<emp.salario<<endl;
 
     cout<<"\nIngrese nuevo salario: ";
     cin>>nuevoSalario;
 
     emp.salario=nuevoSalario;
-    archivo.seekp(posicion*sizeof(Empleado), ios::beg);
+
+    archivo.seekp(posicion, ios::beg);
     archivo.write((char*)&emp, sizeof(Empleado));       
 
-    cout<<"\nSalario actualizado correctamente."<<endl;     
+    cout<<"\nSalario actualizado correctamente."<<endl;   
+    
+    archivo.close();
 
     return 0;
 }
