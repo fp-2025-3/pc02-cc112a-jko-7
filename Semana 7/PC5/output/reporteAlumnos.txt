@@ -31,5 +31,7 @@
 
 Total de estudiantes: 30
 Promedio general del curso: 12.79
-Estudiante con mayor promedio: 19.67
-Estudiante con menor promedio: 5.00
+Estudiante con mayor promedio: 
+1018 Daniela 19.67
+Estudiante con menor promedio: 
+1019 Jorge 5.00
