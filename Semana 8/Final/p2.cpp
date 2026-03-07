@@ -36,8 +36,8 @@ Punto* masLejano(Punto* p1, Punto* p2){
 
 int main (){
     
-    Punto *p1;
-    Punto *p2;
+    Punto *p1 = new Punto;
+    Punto *p2 = new Punto;
     cout<<"Primera coordenada (p1)"<<endl;
     leerPunto(p1);
     cout<<"Segunda coordenada (p2)"<<endl;
@@ -50,6 +50,9 @@ int main (){
         cout<<"El punto mas lejano del origen es p2 con coordenadas: ";
         cout<<"("<<p2->x<<", "<<p2->y<<")"<<endl;
     }
+
+    delete p1;
+    delete p2;
 
     return 0;
 }
