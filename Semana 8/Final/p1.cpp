@@ -54,6 +54,8 @@ int main (){
     }                      
     cout<<endl;     
     
+    delete[] suma;
+    liberarMatriz(M,n);
 
     return 0;
 }
