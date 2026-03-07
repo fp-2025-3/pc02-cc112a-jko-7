@@ -14,28 +14,28 @@ struct Proyecto
 
 int main (){
 
-    ofstream archivo("proyectos.bin", ios::binary);                 
+    fstream archivo("proyectos.bin", ios::binary | ios::in | ios::out | ios::trunc);                 
     if (!archivo){
         cerr<<"No se pudo abrir el archivo"<<endl;
         return 1;
     }   
     
     int n;
-
-    Proyecto* proyecto = new Proyecto[n];
-    cout<<"Cuantos proyectos desea ingresar: ";
+    cout<<"Numero de proyectos: ";
     cin>>n;
 
+    Proyecto* proyecto = new Proyecto[n];
+    
     for (int i=0; i<n; i++){
-        cout<<"Proyecto "<<i+1<<endl;
-        cout<<"Ingrese id: ";
+        cout<<"\nProyecto "<<i+1<<endl;
+        cout<<"ID: ";
         cin>>proyecto[i].id;
         cin.ignore();
-        cout<<"Ingrese titulo: ";
+        cout<<"Titulo: ";
         cin.getline(proyecto[i].titulo, 40);
-        cout<<"Ingrese prepuesto: ";
+        cout<<"Prepuesto: ";
         cin>>proyecto[i].presupuesto;
-        cout<<"Ingrese duracion en meses: ";
+        cout<<"Duracion (meses): ";
         cin>>proyecto[i].duracionMeses;   
     }
 
@@ -47,61 +47,70 @@ int main (){
         }
     }
 
-
     for (int i=0; i<n; i++){
-        archivo.write((char*)(proyecto), sizeof(Proyecto));
+        archivo.write((char*)(&proyecto[i]), sizeof(Proyecto));
     }        
 
-    for (int i=0; i<n-1; i++){
-        for (int j=0; j<n-i-1; j++){
-            if (proyecto[j].id == proyecto[j+1].id){
-                cout<<"Error existen 2 proyectos con el mismo id."<<endl;
-                return 1;
-            }
+    Proyecto nuevoProyecto;
+    cout<<"\nNuevo proyecto a insertar"<<endl;
+    cout<<"ID: ";
+    cin>>nuevoProyecto.id;
+    cin.ignore();
+    cout<<"Titulo: ";
+    cin.getline(nuevoProyecto.titulo, 40);
+    cout<<"Prepuesto: ";
+    cin>>nuevoProyecto.presupuesto;
+    cout<<"Duracion: "; 
+    cin>>nuevoProyecto.duracionMeses;   
+
+    // Verificar si hay IDs duplicados 
+    bool duplicado = false;
+    for (int i=0; i<n; i++){
+        if (proyecto[i].id == nuevoProyecto.id){
+            duplicado=true;
+            break;
         }
     }
 
-    Proyecto nuevoProyecto;
-    cout<<"Ingrese el nuevo proyecto a insertar: "<<endl;
-    cout<<"Ingrese id: ";
-    cin>>nuevoProyecto.id;
-    cin.ignore();
-    cout<<"Ingrese titulo: ";
-    cin.getline(nuevoProyecto.titulo, 40);
-    cout<<"Ingrese prepuesto: ";                                                
-
-    cin>>nuevoProyecto.presupuesto;
-    cout<<"Ingrese duracion en meses: ";                                        
-
-    cin>>nuevoProyecto.duracionMeses;   
-
+    if (duplicado){
+        cout<<"Error: ya existe un proyecto con el mismo ID. No se insertara." << endl;
+        archivo.close();
+        delete[] proyecto;
+        return 1;
+    }
 
     int pos = 0;
     while (pos < n && proyecto[pos].presupuesto > nuevoProyecto.presupuesto){
         pos++;
     }       
 
-    archivo.seekp(pos*sizeof(Proyecto), ios::beg);
-    for (int i=n-1; i>=pos; i--){
-        archivo.write((char*)(&proyecto[i]), sizeof(Proyecto));
-    }
-    archivo.write((char*)(&nuevoProyecto), sizeof(Proyecto));     
-    
-    
-    archivo.seekp(0, ios::beg);
-    cout<<"\nProyectos almacenados en el archivo: "<<endl;
-    for (int i=0; i<n+1; i++){
-        Proyecto p;
-        // No me funciona con archivo.read((char*)(&p), sizeof(Proyecto)); 
-        cout<<"Id: "<<p.id<<endl;
-        cout<<"Titulo: "<<p.titulo<<endl;
-        cout<<"Presupuesto: "<<p.presupuesto<<endl;
-        cout<<"Duracion en meses: "<<p.duracionMeses<<endl;
+    // Desplazar registros hacia adelante usando acceso aleatorio (sin archivo auxiliar)
+    // Mover de atras hacia adelante para no sobrescribir
+    Proyecto temp;
+    for (int i = n - 1; i >= pos; i--) {
+        // Leer registro en posicion i
+        archivo.seekg(i * sizeof(Proyecto), ios::beg);
+        archivo.read((char*)(&temp), sizeof(Proyecto));
+        // Escribir en posicion i+1
+        archivo.seekp((i + 1) * sizeof(Proyecto), ios::beg);
+        archivo.write((char*)(&temp), sizeof(Proyecto));
     }
     
+    // Escribir nuevo proyecto en su posicion correcta
+    archivo.seekp(pos * sizeof(Proyecto), ios::beg);
+    archivo.write((char*)(&nuevoProyecto), sizeof(Proyecto));
+
+    archivo.seekg(0, ios::beg);
+    cout<<"\nContenido del archivo"<<endl;
+    Proyecto p;
+    int total = n + 1;
+    for (int i = 0; i < total; i++) {
+        archivo.read((char*)(&p), sizeof(Proyecto));
+        cout << p.id << " " << p.titulo << " "
+             << p.presupuesto << " " << p.duracionMeses << endl;
+    }
     archivo.close();
     delete[] proyecto;              
 
-    
     return 0;
 }
